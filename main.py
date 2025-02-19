@@ -33,6 +33,7 @@ def main():
     
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     asteroid_field = AsteroidField()
+    test_asteroid = Asteroid(0, 0, 10)
 
 
     while True:
@@ -44,8 +45,8 @@ def main():
         updatable.update(delta_time)
         for asteroid in asteroids:
             if asteroid.collision_check(player):
-                print("Game over!")
-                sys.exit()
+                pass
+                #sys.exit()
             for shot in shots:
                 if shot.collision_check(asteroid):
                     shot.kill()
@@ -61,6 +62,7 @@ def main():
         screen.fill((0,0,0))
         for sprite in drawable:
             sprite.draw(screen)
+            
 
 
         pygame.display.flip() 
