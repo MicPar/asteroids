@@ -1,25 +1,22 @@
 import pygame
+import random
 from circleshape import *
-from constants import *
-from debris import *
 
 # Base class for game objects
-class Shot(CircleShape):
-    def __init__(self, player):
-        super().__init__(player.position.x, player.position.y, SHOT_RADIUS)
-        self.velocity = (pygame.Vector2(0, 1).rotate(player.rotation) * SHOT_SPEED) + player.velocity
-
+class Debris(CircleShape):
+    def __init__(self, parent, force):
+        super().__init__(parent.position.x, parent.position.y, random.uniform(1, max(3, parent.radius * 0.1)))
+        self.velocity = parent.velocity + pygame.Vector2(random.uniform(-force, force), random.uniform(-force, force))
+        self.despawn_timer = 5
     
     def draw(self, screen):
         pygame.draw.circle(screen, (255, 255, 255), self.position, self.radius)
 
     def update(self, delta_time):
+        self.despawn_timer -= delta_time
+        if self.despawn_timer < 0:
+            self.kill()
         self.position += self.velocity * delta_time
-
-    def impact(self):
-        for i in range(10):
-            debris = Debris(self, 500)
-        self.kill()
 
 
     def collision_check(self, other_object):

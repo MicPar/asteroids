@@ -17,13 +17,16 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     game_clock = pygame.time.Clock()
     delta_time = 0
+    game_over = False
+    exit_timer = 3
     
+    debris = pygame.sprite.Group()
     shots = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     
-    
+    Debris.containers = (debris, updatable, drawable)
     Player.containers = (updatable, drawable)
     Shot.containers = (shots, updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
@@ -40,16 +43,23 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
+        if game_over == True:
+            exit_timer -= delta_time
+        if exit_timer < 0:
+            sys.exit()
+
         
         #state        
         updatable.update(delta_time)
         for asteroid in asteroids:
             if asteroid.collision_check(player):
-                pass
+                player.impact()
+                asteroid.split()
+                game_over = True
                 #sys.exit()
             for shot in shots:
                 if shot.collision_check(asteroid):
-                    shot.kill()
+                    shot.impact()
                     asteroid.split()
 
         

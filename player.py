@@ -3,6 +3,7 @@ import pygame
 from constants import *
 from circleshape import *
 from shot import *
+from debris import *
 
 class Player(CircleShape):
     def __init__(self, x, y):
@@ -35,6 +36,14 @@ class Player(CircleShape):
         else:
             self.timer = PLAYER_SHOOT_COOLDOWN
             Shot(self)
+
+    def impact(self):
+        for i in range(50):
+            debris = Debris(self, 200)
+        self.kill()
+
+
+
 
     def update(self, delta_time):
         if self.timer > 0:

@@ -2,6 +2,7 @@ import pygame
 import random
 from constants import *
 from circleshape import *
+from debris import *
 
 class Asteroid(CircleShape):
     def __init__(self, x, y, radius):
@@ -16,6 +17,8 @@ class Asteroid(CircleShape):
         self.edge_wrap(self.radius)
 
     def split(self):
+        for i in range(30):
+            debris = Debris(self, 100)
         self.kill()
         if self.radius == ASTEROID_MIN_RADIUS:
             return
